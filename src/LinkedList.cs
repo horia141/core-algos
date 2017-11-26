@@ -97,6 +97,26 @@ namespace CoreAlgos
         }
 
         /// <summary>
+        ///   Add a new element to the front of the list.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     The time complexity is <c>O(1)</c> and the space complexity is the same.
+        ///   </para>
+        /// </remarks>
+        /// <param name="newData">The element to add</param>
+        /// <returns>The list, for use in fluent interfaces</returns>
+        public SinglyLinkedList<T> Prepend(T newData)
+        {
+            var newNode = new Node(newData);
+            newNode.Next = Head.Next;
+            Head.Next = newNode;
+            _length++;
+
+            return this;
+        }
+
+        /// <summary>
         ///   The number of elements in the list.
         /// </summary>
         public int Length => _length;

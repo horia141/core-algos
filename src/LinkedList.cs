@@ -142,6 +142,38 @@ namespace CoreAlgos
         }
 
         /// <summary>
+        ///   Reverse the current list in place.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     The time complexity is <c>O(N)</c> and the space complexity is <c>O(1)</c>, but the
+        ///     list is affected.
+        ///   </para>
+        /// </remarks>
+        /// <returns>The list, for use in fluent interfaces</returns>
+        public SinglyLinkedList<T> ReverseInPlace()
+        {
+            // The trick here is to use currNode as the current iterator for the list
+            // Head as the "previous" node and Tail as the "next" node. We walk each node
+            // and switch its Next reference to the previous node / Head. We use Tail
+            // so that we can then move to the next reference.
+            var currNode = Head.Next;
+            Tail = currNode;
+
+            // We basically process the list until we reach the last element, which will point to
+            // the Head of the list.
+            while (currNode.Next != Head)
+            {
+                Tail = currNode.Next;
+                currNode.Next = Head;
+                Head = currNode;
+                currNode = Tail;
+            }
+
+            return this;
+        }
+
+        /// <summary>
         ///   The number of elements in the list.
         /// </summary>
         public int Length => _length;

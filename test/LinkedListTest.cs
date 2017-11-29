@@ -132,5 +132,29 @@ namespace CoreAlgos.Test
         }
 
         #endregion
+
+        #region ReverseInPlace
+
+        [Fact]
+        public void ReverseInPlaceProducesTheSameList()
+        {
+            var list = new SinglyLinkedList<int>();
+            var reversedList = list.ReverseInPlace();
+            reversedList.Should().BeSameAs(list);
+        }
+
+        [Fact]
+        public void ReverseInPlace()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10).Append(20).Append(30);
+            list.ReverseInPlace();
+            list.Length.Should().Be(3);
+            list.GetAtIndex(0).Should().Be(30);
+            list.GetAtIndex(1).Should().Be(20);
+            list.GetAtIndex(2).Should().Be(10);
+        }
+
+        #endregion
     }
 }

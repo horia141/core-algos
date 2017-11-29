@@ -1,5 +1,6 @@
-using Xunit;
 using FluentAssertions;
+using System;
+using Xunit;
 
 using CoreAlgos;
 
@@ -7,12 +8,49 @@ namespace CoreAlgos.Test
 {
     public class SinglyLinkedListTest
     {
+        #region Construction
+
         [Fact]
         public void CreateEmptyList()
         {
             var list = new SinglyLinkedList<int>();
             list.Length.Should().Be(0);
         }
+
+        #endregion
+
+        #region GetAtIndex
+
+        [Fact]
+        public void GetAtIndexThrowsForNegativeIndex()
+        {
+            var list = new SinglyLinkedList<int>();
+            Action action = () => list.GetAtIndex(-1);
+            action.ShouldThrow<IndexOutOfRangeException>();
+        }
+
+        [Fact]
+        public void GetAtIndexThrowsForIndexOutsideOfRange()
+        {
+            var list = new SinglyLinkedList<int>();
+            Action action1 = () => list.GetAtIndex(0);
+            Action action2 = () => list.GetAtIndex(1);
+            action1.ShouldThrow<IndexOutOfRangeException>();
+            list.Append(10);
+            action2.ShouldThrow<IndexOutOfRangeException>();
+        }
+
+        [Fact]
+        public void GetAtIndexProducesTheRightElement()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10);
+            list.GetAtIndex(0).Should().Be(10);
+        }
+
+        #endregion
+
+        #region Append
 
         [Fact]
         public void AppendAddsAnElement()
@@ -32,6 +70,10 @@ namespace CoreAlgos.Test
             list.GetAtIndex(0).Should().Be(10);
             list.GetAtIndex(1).Should().Be(20);
         }
+
+        #endregion
+
+        #region Prepend
 
         [Fact]
         public void PrependAddsAnElement()
@@ -63,5 +105,32 @@ namespace CoreAlgos.Test
             list.GetAtIndex(2).Should().Be(10);
             list.GetAtIndex(3).Should().Be(30);
         }
+
+        #endregion
+
+        #region Reverse
+
+        [Fact]
+        public void ReverseProducesANewList()
+        {
+            var list = new SinglyLinkedList<int>();
+            var reversedList = list.Reverse();
+            reversedList.Should().NotBeSameAs(list);
+            reversedList.Length.Should().Be(0);
+        }
+
+        [Fact]
+        public void ReverseList()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10).Append(20).Append(30);
+            var reversedList = list.Reverse();
+            reversedList.Length.Should().Be(3);
+            reversedList.GetAtIndex(0).Should().Be(30);
+            reversedList.GetAtIndex(1).Should().Be(20);
+            reversedList.GetAtIndex(2).Should().Be(10);
+        }
+
+        #endregion
     }
 }

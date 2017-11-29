@@ -89,6 +89,7 @@ namespace CoreAlgos
         public SinglyLinkedList<T> Append(T newData)
         {
             var newNode = new Node(newData);
+            newNode.Next = Head;
             Tail.Next = newNode;
             Tail = newNode;
             _length++;
@@ -114,6 +115,30 @@ namespace CoreAlgos
             _length++;
 
             return this;
+        }
+
+        /// <summary>
+        ///   Build a reversed version of the current list as a new list.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     The time complexity is <c>O(N)</c> and the space complexity is <c>O(N)</c> since it
+        ///     creates a new list.
+        ///   </para>
+        /// </remarks>
+        /// <returns>A copy of the current list, only in reverse</returns>
+        public SinglyLinkedList<T> Reverse()
+        {
+            var reversedList = new SinglyLinkedList<T>();
+            var currNode = Head.Next;
+
+            while (currNode != Head)
+            {
+                reversedList.Prepend(currNode.Data);
+                currNode = currNode.Next;
+            }
+
+            return reversedList;
         }
 
         /// <summary>

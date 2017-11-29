@@ -7,7 +7,7 @@
     <PackageId>CoreAlgos</PackageId>
     <PackageVersion>0.0.0</PackageVersion>
     <Authors>Horia Coman</Authors>
-    <Owners>Horia Coman</Authors>
+    <Owners>Horia Coman</Owners>
     <Title>CoreAlgos</Title>
     <Description>This is a repository with all sorts of data structures and algorithms implemented in C#. It's just an exercise I'm doing. Nothing fancy about it.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

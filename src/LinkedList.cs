@@ -118,6 +118,32 @@ namespace CoreAlgos
         }
 
         /// <summary>
+        ///   Remove the first element from the list.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     The time complexity is <c>O(1)</c> and the space complexity is the same.
+        ///   </para>
+        /// </remarks>
+        /// <param name="result">An output parameter which will contain the removed value</param>
+        /// <returns>
+        ///     The list, for use in fluent interfaces and the removed element as an output
+        ///     parameter.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">If there are no elements to remove</exception>
+        public SinglyLinkedList<T> PopFirst(out T result)
+        {
+            if (_length == 0)
+                throw new InvalidOperationException();
+
+            result = Head.Next.Data;
+            Head.Next = Head.Next.Next;
+            _length--;
+
+            return this;
+        }
+
+        /// <summary>
         ///   Build a reversed version of the current list as a new list.
         /// </summary>
         /// <remarks>

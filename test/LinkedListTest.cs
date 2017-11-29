@@ -53,6 +53,14 @@ namespace CoreAlgos.Test
         #region Append
 
         [Fact]
+        public void AppendReturnsTheSameList()
+        {
+            var list = new SinglyLinkedList<int>();
+            var newList = list.Append(10);
+            newList.Should().BeSameAs(list);
+        }
+
+        [Fact]
         public void AppendAddsAnElement()
         {
             var list = new SinglyLinkedList<int>();
@@ -74,6 +82,14 @@ namespace CoreAlgos.Test
         #endregion
 
         #region Prepend
+
+        [Fact]
+        public void PrependReturnsTheSameList()
+        {
+            var list = new SinglyLinkedList<int>();
+            var newList = list.Prepend(10);
+            newList.Should().BeSameAs(list);
+        }
 
         [Fact]
         public void PrependAddsAnElement()
@@ -104,6 +120,46 @@ namespace CoreAlgos.Test
             list.GetAtIndex(1).Should().Be(20);
             list.GetAtIndex(2).Should().Be(10);
             list.GetAtIndex(3).Should().Be(30);
+        }
+
+        #endregion
+
+        #region PopFirst
+
+        [Fact]
+        public void PopFirstThrowsWhenThereAreNoElements()
+        {
+            var list = new SinglyLinkedList<int>();
+            Action action = () => list.PopFirst(out int notUsed);
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void PopFirstReturnsTheSameList()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10).Append(20).Append(30);
+            var newList = list.PopFirst(out int notUsed);
+            newList.Should().BeSameAs(list);
+        }
+
+        [Fact]
+        public void PopFirstRemovesTheFirstElement()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10).Append(20).Append(30);
+            list.PopFirst(out int first);
+            first.Should().Be(10);
+            list.Length.Should().Be(2);
+            list.GetAtIndex(0).Should().Be(20);
+            list.GetAtIndex(1).Should().Be(30);
+            list.PopFirst(out int second);
+            second.Should().Be(20);
+            list.Length.Should().Be(1);
+            list.GetAtIndex(0).Should().Be(30);
+            list.PopFirst(out int third);
+            third.Should().Be(30);
+            list.Length.Should().Be(0);
         }
 
         #endregion

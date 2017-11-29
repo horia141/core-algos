@@ -81,6 +81,56 @@ namespace CoreAlgos.Test
 
         #endregion
 
+        #region PopLast
+
+        [Fact]
+        public void PopLastThrowsWhenThereAreNoElements()
+        {
+            var list = new SinglyLinkedList<int>();
+            Action action = () => list.PopLast(out int notUsed);
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void PopLastReturnsTheSameList()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10).Append(20).Append(30);
+            var newList = list.PopLast(out int notUsed);
+            newList.Should().BeSameAs(list);
+        }
+
+        [Fact]
+        public void PopLastSingleElement()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10);
+            list.PopLast(out int first);
+            first.Should().Be(10);
+            list.Length.Should().Be(0);
+        }
+
+        [Fact]
+        public void PopLastRemovesTheLastElement()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10).Append(20).Append(30);
+            list.PopLast(out int first);
+            first.Should().Be(30);
+            list.Length.Should().Be(2);
+            list.GetAtIndex(0).Should().Be(10);
+            list.GetAtIndex(1).Should().Be(20);
+            list.PopLast(out int second);
+            second.Should().Be(20);
+            list.Length.Should().Be(1);
+            list.GetAtIndex(0).Should().Be(10);
+            list.PopLast(out int third);
+            third.Should().Be(10);
+            list.Length.Should().Be(0);
+        }
+
+        #endregion
+
         #region Prepend
 
         [Fact]
@@ -144,6 +194,16 @@ namespace CoreAlgos.Test
         }
 
         [Fact]
+        public void PopFirstSingleElement()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10);
+            list.PopFirst(out int first);
+            first.Should().Be(10);
+            list.Length.Should().Be(0);
+        }
+
+        [Fact]
         public void PopFirstRemovesTheFirstElement()
         {
             var list = new SinglyLinkedList<int>();
@@ -176,7 +236,17 @@ namespace CoreAlgos.Test
         }
 
         [Fact]
-        public void ReverseList()
+        public void ReverseOneElement()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10);
+            var reversedList = list.Reverse();
+            reversedList.Length.Should().Be(1);
+            reversedList.GetAtIndex(0).Should().Be(10);
+        }
+
+        [Fact]
+        public void ReverseMultipleElements()
         {
             var list = new SinglyLinkedList<int>();
             list.Append(10).Append(20).Append(30);
@@ -200,7 +270,17 @@ namespace CoreAlgos.Test
         }
 
         [Fact]
-        public void ReverseInPlace()
+        public void ReverseInPlaceOneElement()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10);
+            list.ReverseInPlace();
+            list.Length.Should().Be(1);
+            list.GetAtIndex(0).Should().Be(10);
+        }
+
+        [Fact]
+        public void ReverseInPlaceMultipleElements()
         {
             var list = new SinglyLinkedList<int>();
             list.Append(10).Append(20).Append(30);

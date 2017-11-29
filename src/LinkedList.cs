@@ -98,6 +98,37 @@ namespace CoreAlgos
         }
 
         /// <summary>
+        ///   Remove the last element from the list.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     The time complexity is <c>O(N)</c> and the space complexity is <c>O(1)</c>.
+        ///   </para>
+        /// </remarks>
+        /// <param name="result">An output parameter which will contain the removed value</param>
+        /// <returns>
+        ///     The list, for use in fluent interfaces and the removed element as an output
+        ///     parameter.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">If there are no elements to remove</exception>
+        public SinglyLinkedList<T> PopLast(out T result)
+        {
+            if (_length == 0)
+                throw new InvalidOperationException();
+
+            var newTail = Head.Next;
+            while (newTail.Next != Tail)
+                newTail = newTail.Next;
+
+            result = Tail.Data;
+            newTail.Next = Head;
+            Tail = newTail;
+            _length--;
+
+            return this;
+        }
+
+        /// <summary>
         ///   Add a new element to the front of the list.
         /// </summary>
         /// <remarks>

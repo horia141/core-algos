@@ -224,6 +224,58 @@ namespace CoreAlgos.Test
 
         #endregion
 
+        #region FindElement
+
+        [Fact]
+        public void FindElementReturnsTheElementsPosition()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10).Append(20).Append(30);
+            list.FindElement(10).Should().Be(0);
+            list.FindElement(20).Should().Be(1);
+            list.FindElement(30).Should().Be(2);
+        }
+
+        [Fact]
+        public void FindElementReturnsMinus1WhenItCantFindAnElement()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10).Append(20).Append(30);
+            list.FindElement(-10).Should().Be(-1);
+            list.FindElement(-20).Should().Be(-1);
+            list.FindElement(-30).Should().Be(-1);
+        }
+
+        [Fact]
+        public void FindElementWithFilterReturnsTheElementsPosition()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10).Append(20).Append(30);
+            list.FindElement(x => x == 10).Should().Be(0);
+            list.FindElement(x => x == 20).Should().Be(1);
+            list.FindElement(x => x == 30).Should().Be(2);
+        }
+
+        [Fact]
+        public void FindElementWithFilterReturnsMinus1WhenItCantFindAnElement()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10).Append(20).Append(30);
+            list.FindElement(x => x == -10).Should().Be(-1);
+            list.FindElement(x => x == -20).Should().Be(-1);
+            list.FindElement(x => x == -30).Should().Be(-1);
+        }
+
+        [Fact]
+        public void FindElementWithFilterAndNonEquality()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Append(10).Append(20).Append(30);
+            list.FindElement(x => x > 10).Should().Be(1);
+        }
+
+        #endregion
+
         #region Reverse
 
         [Fact]

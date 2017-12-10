@@ -175,6 +175,68 @@ namespace CoreAlgos
         }
 
         /// <summary>
+        ///   Finds the first position a given value appears in the list.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     The time complexity is <c>O(N)</c> in the worst and average cases, and the space
+        ///     complexity is <c>O(1)</c>.
+        ///   </para>
+        ///   <para>
+        ///     Only finds the first occurrence of the given element.
+        ///   </para>
+        /// </remarks>
+        /// <param name="needle">The element to find</param>
+        /// <returns>The position in the list at which the element was found, or -1 if it wasn't found</returns>
+        public int FindElement(T needle)
+        {
+            var currNode = Head.Next;
+            var index = 0;
+
+            while (currNode != Head)
+            {
+                if (currNode.Data.Equals(needle))
+                    return index;
+
+                currNode = currNode.Next;
+                index++;
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        ///   Finds the first position a given filter function is true.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     The time complexity is <c>O(N)</c> in the worst and average cases, and the space
+        ///     complexity is <c>O(1)</c>.
+        ///   </para>
+        ///   <para>
+        ///     Only finds the first occurrence of the element.
+        ///   </para>
+        /// </remarks>
+        /// <param name="filter">The function to apply to each element</param>
+        /// <returns>The position in the list at which the element was found, or -1 if it wasn't found</returns>
+        public int FindElement(Func<T, bool> filter)
+        {
+            var currNode = Head.Next;
+            var index = 0;
+
+            while (currNode != Head)
+            {
+                if (filter(currNode.Data))
+                    return index;
+
+                currNode = currNode.Next;
+                index++;
+            }
+
+            return -1;
+        }
+
+        /// <summary>
         ///   Build a reversed version of the current list as a new list.
         /// </summary>
         /// <remarks>

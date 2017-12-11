@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CoreAlgos
 {
@@ -13,7 +15,7 @@ namespace CoreAlgos
     ///   </para>
     /// </remarks>
     /// <typeparam name="T">The type of elements in the list</typeparam>
-    public class SinglyLinkedList<T>
+    public class SinglyLinkedList<T> : IEnumerable<T>
     {
         private class Node
         {
@@ -33,6 +35,37 @@ namespace CoreAlgos
             }
         }
 
+        private class Enumerator : IEnumerator<T>
+        {
+            private SinglyLinkedList<T> _list;
+            private Node _curr;
+
+            public Enumerator(SinglyLinkedList<T> list)
+            {
+                _list = list;
+                _curr = list.Head;
+            }
+
+            public bool MoveNext()
+            {
+                if (_curr.Next == _list.Head) {
+                    return false;
+                }
+
+                _curr = _curr.Next;
+                return true;
+            }
+
+            public void Reset()
+            {
+                _curr = _list.Head;
+            }
+
+            void IDisposable.Dispose() {}
+            public T Current => _curr.Data;
+            object IEnumerator.Current => Current;
+        }
+
         private Node Head { get; set; }
         private Node Tail { get; set; }
         private int _length;
@@ -47,6 +80,18 @@ namespace CoreAlgos
             Head.Next = Tail;
             _length = 0;
         }
+
+        /// <summary>
+        ///   Obtain an enumerator for this collection.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerator" /> for the collection</returns>
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
         ///   Retrieve the element at the provided index in the list.
@@ -96,6 +141,17 @@ namespace CoreAlgos
 
             return this;
         }
+
+        /// <summary>
+        ///   Add a new element to the end of the list. Standard collection interface.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     The time complexity is <c>O(1)</c> and the space complexity is the same.
+        ///   </para>
+        /// </remarks>
+        /// <param name="newData">The element to add</param>
+        public void Add(T newData) => Append(newData);
 
         /// <summary>
         ///   Remove the last element from the list.

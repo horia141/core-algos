@@ -19,6 +19,86 @@ namespace CoreAlgos.Test
 
         #endregion
 
+        #region IEnumerableIntegration
+
+        [Fact]
+        public void ConstructionViaInitializer()
+        {
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
+            list.Length.Should().Be(3);
+            list.GetAtIndex(0).Should().Be(10);
+            list.GetAtIndex(1).Should().Be(20);
+            list.GetAtIndex(2).Should().Be(30);
+        }
+
+        [Fact]
+        public void CanBeIterated()
+        {
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
+            var enumerator = list.GetEnumerator();
+
+            enumerator.Current.Should().Be(0);
+            enumerator.MoveNext().Should().Be(true);
+            enumerator.Current.Should().Be(10);
+            enumerator.MoveNext().Should().Be(true);
+            enumerator.Current.Should().Be(20);
+            enumerator.MoveNext().Should().Be(true);
+            enumerator.Current.Should().Be(30);
+            enumerator.MoveNext().Should().Be(false);
+            enumerator.Current.Should().Be(30);
+            enumerator.MoveNext().Should().Be(false);
+            enumerator.Current.Should().Be(30);
+            enumerator.MoveNext().Should().Be(false);
+            enumerator.Current.Should().Be(30);
+        }
+
+        [Fact]
+        public void EnumeratorReset()
+        {
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
+            var enumerator = list.GetEnumerator();
+
+            enumerator.Current.Should().Be(0);
+            enumerator.MoveNext().Should().Be(true);
+            enumerator.Current.Should().Be(10);
+            enumerator.MoveNext().Should().Be(true);
+            enumerator.Current.Should().Be(20);
+            enumerator.Reset();
+            enumerator.Current.Should().Be(0);
+            enumerator.MoveNext().Should().Be(true);
+            enumerator.Current.Should().Be(10);
+        }
+
+        [Fact]
+        public void CanBeIteratedViaForEach()
+        {
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
+            list.Should().ContainInOrder(new [] {10, 20, 30});
+
+            int idx = 0;
+            foreach (var elem in list)
+            {
+                switch (idx)
+                {
+                    case 0:
+                        elem.Should().Be(10);
+                        break;
+                    case 1:
+                        elem.Should().Be(20);
+                        break;
+                    case 2:
+                        elem.Should().Be(30);
+                        break;
+                    default:
+                        true.Should().Be(false);
+                        break;
+                }
+                idx++;
+            }
+        }
+
+        #endregion
+
         #region GetAtIndex
 
         [Fact]
@@ -43,8 +123,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void GetAtIndexProducesTheRightElement()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10);
+            var list = new SinglyLinkedList<int>() { 10 };
             list.GetAtIndex(0).Should().Be(10);
         }
 
@@ -55,7 +134,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void AppendReturnsTheSameList()
         {
-            var list = new SinglyLinkedList<int>();
+            var list = new SinglyLinkedList<int>() { };
             var newList = list.Append(10);
             newList.Should().BeSameAs(list);
         }
@@ -81,6 +160,30 @@ namespace CoreAlgos.Test
 
         #endregion
 
+        #region Add
+
+        [Fact]
+        public void AddAddsAnElement()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Add(10);
+            list.Length.Should().Be(1);
+            list.GetAtIndex(0).Should().Be(10);
+        }
+
+        [Fact]
+        public void AddAddsTwoElements()
+        {
+            var list = new SinglyLinkedList<int>();
+            list.Add(10);
+            list.Add(20);
+            list.Length.Should().Be(2);
+            list.GetAtIndex(0).Should().Be(10);
+            list.GetAtIndex(1).Should().Be(20);
+        }
+
+        #endregion
+
         #region PopLast
 
         [Fact]
@@ -94,8 +197,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void PopLastReturnsTheSameList()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10).Append(20).Append(30);
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
             var newList = list.PopLast(out int notUsed);
             newList.Should().BeSameAs(list);
         }
@@ -103,8 +205,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void PopLastSingleElement()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10);
+            var list = new SinglyLinkedList<int>() {10};
             list.PopLast(out int first);
             first.Should().Be(10);
             list.Length.Should().Be(0);
@@ -113,8 +214,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void PopLastRemovesTheLastElement()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10).Append(20).Append(30);
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
             list.PopLast(out int first);
             first.Should().Be(30);
             list.Length.Should().Be(2);
@@ -196,8 +296,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void PopFirstSingleElement()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10);
+            var list = new SinglyLinkedList<int>() {10};
             list.PopFirst(out int first);
             first.Should().Be(10);
             list.Length.Should().Be(0);
@@ -206,8 +305,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void PopFirstRemovesTheFirstElement()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10).Append(20).Append(30);
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
             list.PopFirst(out int first);
             first.Should().Be(10);
             list.Length.Should().Be(2);
@@ -229,8 +327,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void FindElementReturnsTheElementsPosition()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10).Append(20).Append(30);
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
             list.FindElement(10).Should().Be(0);
             list.FindElement(20).Should().Be(1);
             list.FindElement(30).Should().Be(2);
@@ -239,8 +336,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void FindElementReturnsMinus1WhenItCantFindAnElement()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10).Append(20).Append(30);
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
             list.FindElement(-10).Should().Be(-1);
             list.FindElement(-20).Should().Be(-1);
             list.FindElement(-30).Should().Be(-1);
@@ -249,8 +345,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void FindElementWithFilterReturnsTheElementsPosition()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10).Append(20).Append(30);
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
             list.FindElement(x => x == 10).Should().Be(0);
             list.FindElement(x => x == 20).Should().Be(1);
             list.FindElement(x => x == 30).Should().Be(2);
@@ -259,8 +354,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void FindElementWithFilterReturnsMinus1WhenItCantFindAnElement()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10).Append(20).Append(30);
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
             list.FindElement(x => x == -10).Should().Be(-1);
             list.FindElement(x => x == -20).Should().Be(-1);
             list.FindElement(x => x == -30).Should().Be(-1);
@@ -269,8 +363,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void FindElementWithFilterAndNonEquality()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10).Append(20).Append(30);
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
             list.FindElement(x => x > 10).Should().Be(1);
         }
 
@@ -290,8 +383,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void ReverseOneElement()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10);
+            var list = new SinglyLinkedList<int>() {10};
             var reversedList = list.Reverse();
             reversedList.Length.Should().Be(1);
             reversedList.GetAtIndex(0).Should().Be(10);
@@ -300,8 +392,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void ReverseMultipleElements()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10).Append(20).Append(30);
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
             var reversedList = list.Reverse();
             reversedList.Length.Should().Be(3);
             reversedList.GetAtIndex(0).Should().Be(30);
@@ -324,8 +415,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void ReverseInPlaceOneElement()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10);
+            var list = new SinglyLinkedList<int>() {10};
             list.ReverseInPlace();
             list.Length.Should().Be(1);
             list.GetAtIndex(0).Should().Be(10);
@@ -334,8 +424,7 @@ namespace CoreAlgos.Test
         [Fact]
         public void ReverseInPlaceMultipleElements()
         {
-            var list = new SinglyLinkedList<int>();
-            list.Append(10).Append(20).Append(30);
+            var list = new SinglyLinkedList<int>() {10, 20, 30};
             list.ReverseInPlace();
             list.Length.Should().Be(3);
             list.GetAtIndex(0).Should().Be(30);
